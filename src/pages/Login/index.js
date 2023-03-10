@@ -1,18 +1,38 @@
-import { Card, Button, Checkbox, Form, Input } from 'antd'
+import { Card, Button, Checkbox, Form, Input, message } from 'antd'
+
 import logo from '@/assets/logo.png'
 import './index.scss'
-
+import { postsetToken } from '@/store/LoginStore'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from "react-router-dom";
 const Login = () => {
-  const onFinish = (values) => {
-    console.log(values)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const onFinish = async (values) => {
+    // console.log(values)
+    try {
+      await dispatch(postsetToken(values))
+      navigate('/Layout', { replace: true })
+      message.success({
+        content: '登入成功',
+      });
+    } catch (e) {
+      message.error(e.response?.data?.message || '登录失败')
+    }
   }
   return (
     <div className="login">
       <Card className="login-container">
         <img className="login-logo" src={logo} alt="" />
         {/* 登录表单 */}
-        <Form onFinish={onFinish} initialValues={{ remember: true, }}>
-          <Form.Item name="username"
+        <Form initialValues={{
+          mobile: '13911111111',
+          code: '246810',
+          remember: true
+        }}
+          onFinish={onFinish}>
+          <Form.Item name="mobile"
             // 表单规则
             rules={[
               {//规则一
@@ -27,7 +47,7 @@ const Login = () => {
             ]}>
             <Input size="large" placeholder="请输入手机号" />
           </Form.Item>
-          <Form.Item name="password"
+          <Form.Item name="code"
             rules={[
               {
                 required: true,
