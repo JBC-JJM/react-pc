@@ -12,6 +12,7 @@ const Login = () => {
   const onFinish = async (values) => {
     // console.log(values)
     try {
+      //postsetToken为异步函数
       await dispatch(postsetToken(values))
       navigate('/Layout', { replace: true })
       message.success({
