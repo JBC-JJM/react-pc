@@ -4,18 +4,22 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { http } from "@/utils";
-import { getToken, setToken as setTokenLocal } from "../utils/token";
+import { getToken, setToken as setTokenLocal ,removeToken} from "@/utils/token";
 const login = createSlice({
     name: 'login',
     initialState: {
-        // 防止被重新初始化
-        token: getToken || '',
+        // 防止被重新初始化,注意是直接调用函数
+        token: getToken() || '',
     },
     reducers: {
         setToken (state, action) {
             state.token = action.payload
             setTokenLocal(state.token)
         },
+        loginOut(state){
+            removeToken()
+            state.token=''
+        }
     },
 })
 // 
@@ -31,8 +35,8 @@ const postsetToken = ({ mobile, code }) => {
 
 
 // 封装并导出actions
-const { add } = login.actions
-export { postsetToken, add }
+const { add,loginOut} = login.actions
+export { postsetToken, add ,loginOut}
 // 封装并导出reducer
 const reducer = login.reducer
 export default reducer

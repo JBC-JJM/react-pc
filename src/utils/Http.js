@@ -8,12 +8,16 @@
 // 2xx 范围内的状态码都会触发该函数。对响应数据做点什么，返回对象的data部分就不用在data.data了
 // 超出 2xx 范围的状态码都会触发该函数。对响应错误做点什么
 
+
+// error:token是会自动在两个小时消除，而后当请求后得到的响应将无法识别token，导致401，所以需要编程实现跳转回login
 import axios from 'axios'
 import { getToken } from '@/utils'
+import { history } from '@/utils/history'
+import {removeToken} from '@/utils/token'
 
 const http = axios.create({
   baseURL: 'http://geek.itheima.net/v1_0',
-  timeout: 5000
+  timeout: 5000,
 })
 
 // 1、
@@ -26,10 +30,20 @@ http.interceptors.request.use((config) => {
 })
 
 // 2、
-http.interceptors.response.use((response) => {
-  return response.data
-}, (error) => {
-  return Promise.reject(error)
-})
+http.interceptors.response.use(
+  (response) => {
+    return response.data
+  },
+  (error) => {
+    console.log(error)
+    if (error.response.status === 401) {
+      // 删除token
+      removeToken()
+      // 跳转到登录页
+      history.push('/login')
+    }
+    return Promise.reject(error)
+  }
+)
 
 export { http }
