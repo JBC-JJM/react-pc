@@ -34,7 +34,7 @@ const Login = () => {
         }}
           onFinish={onFinish}>
           <Form.Item name="mobile"
-            // 表单规则
+            // 输入框表单规则
             rules={[
               {//规则一
                 required: true,//必要输入
