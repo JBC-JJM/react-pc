@@ -5,8 +5,9 @@
 - 技术
   - React 官方脚手架 `create-react-app`
   - react hooks
-  - 状态管理：mobx
-  - UI 组件库：`antd` v4
+  - 图形化工具 Echarts
+  - 状态管理：redux
+  - UI 组件库：`antd` v5
   - ajax请求库：`axios`
   - 路由：`react-router-dom` 以及 `history`
   - 富文本编辑器：`react-quill`
